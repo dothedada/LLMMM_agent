@@ -17,13 +17,19 @@ def main() -> None:
         print('Example: python main.py "How do I build a calculator app?"')
         sys.exit(1)
 
-    prompt: str = " ".join(args)
+    print(args)
 
-    api_key: str | None = os.environ.get("GEMINI_API_KEY")
-    client: genai.Client = genai.Client(api_key=api_key)
+    # prompt: str = " ".join(args)
+    #
+    # api_key: str | None = os.environ.get("GEMINI_API_KEY")
+    # client: genai.Client = genai.Client(api_key=api_key)
+    #
+    # messages = [types.Content(role="User", parts=[types.Part(text=prompt)])]
+    #
+    # generate_content(client, messages)
 
-    messages = [types.Content(role="User", parts=[types.Part(text=prompt)])]
 
+def generate_content(client: genai.Client, messages: List[types.Content]) -> None:
     response: GenerateContentResponse = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=messages,
