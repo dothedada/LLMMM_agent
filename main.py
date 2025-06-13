@@ -17,29 +17,36 @@ def main() -> None:
         print('Example: python main.py "How do I build a calculator app?"')
         sys.exit(1)
 
-    print(args)
+    prompt: str = " ".join([arg for arg in args if not arg.startswith("--")])
+    flags: List[str] = [arg for arg in args if arg.startswith("--")]
 
-    # prompt: str = " ".join(args)
-    #
-    # api_key: str | None = os.environ.get("GEMINI_API_KEY")
-    # client: genai.Client = genai.Client(api_key=api_key)
-    #
-    # messages = [types.Content(role="User", parts=[types.Part(text=prompt)])]
-    #
-    # generate_content(client, messages)
+    api_key: str | None = os.environ.get("GEMINI_API_KEY")
+    client: genai.Client = genai.Client(api_key=api_key)
+
+    if "--verbose" in flags:
+        print(f"User prompt: {prompt}")
+
+    messages = [types.Content(role="User", parts=[types.Part(text=prompt)])]
+
+    generate_content(client, messages, flags)
 
 
-def generate_content(client: genai.Client, messages: List[types.Content]) -> None:
+def generate_content(
+    client: genai.Client, messages: List[types.Content], flags: List[str]
+) -> None:
     response: GenerateContentResponse = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=messages,
     )
 
     if response and response.usage_metadata:
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-        print("Response:")
+        if "--verbose" in flags:
+            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+            print("Response:")
+
         print(response.text)
+
     else:
         print("Cannot get a response from the server.")
         sys.exit(1)
