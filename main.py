@@ -1,32 +1,43 @@
+from typing import List
 import os
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
+from google.genai.types import GenerateContentResponse
 import sys
 
-def main():
+
+def main() -> None:
     load_dotenv()
-    args = sys.argv[1:]
+    args: List[str] = sys.argv[1:]
 
     if not args:
         print("LLMMM code assistant")
         print('\nUsage: python main.py "your prompt here"')
         print('Example: python main.py "How do I build a calculator app?"')
-        exit(1)
+        sys.exit(1)
 
-    prompt = " ".join(args)
+    prompt: str = " ".join(args)
 
-    api_key = os.environ.get("GEMINI_API_KEY")
-    client = genai.Client(api_key=api_key)
+    api_key: str | None = os.environ.get("GEMINI_API_KEY")
+    client: genai.Client = genai.Client(api_key=api_key)
 
-    response = client.models.generate_content(model='gemini-2.0-flash-001', contents=prompt)
+    messages = [types.Content(role="User", parts=[types.Part(text=prompt)])]
 
-    print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-    print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    print("Response:")
-    print(response.text)
+    response: GenerateContentResponse = client.models.generate_content(
+        model="gemini-2.0-flash-001",
+        contents=messages,
+    )
+
+    if response and response.usage_metadata:
+        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+        print("Response:")
+        print(response.text)
+    else:
+        print("Cannot get a response from the server.")
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
-
-
-
