@@ -1,0 +1,1 @@
+FILE_MAX_LENGTH: int = 10_000
