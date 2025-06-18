@@ -27,8 +27,8 @@ def get_file_content(working_directory: str, file_path: str) -> str:
             return f'Error: cannot read file "{file_path}": {err}'
 
 
-schema_get_files_content = types.FunctionDeclaration(
-    name="get_files_content",
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
     description="Get the content of a file in the specified directory, constrained to the working directory.",
     parameters=types.Schema(
         type=types.Type.OBJECT,

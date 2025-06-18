@@ -40,7 +40,7 @@ def run_python_file(working_directory: str, file_path: str) -> str:
 
 
 schema_run_python = types.FunctionDeclaration(
-    name="run_python",
+    name="run_python_file",
     description="Runs the specified python file in the specified folder, constrined to the working directory",
     parameters=types.Schema(
         type=types.Type.OBJECT,
