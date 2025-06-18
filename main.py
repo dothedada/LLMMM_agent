@@ -7,6 +7,7 @@ from google.genai.types import GenerateContentResponse
 import sys
 from app.prompts import system_prompt
 from app.function_declarations import available_functions
+from functions.call_function import call_function
 
 
 def main() -> None:
@@ -47,8 +48,9 @@ def generate_content(
         ),
     )
 
+    verbose = "--verbose" in flags
     if response and response.usage_metadata:
-        if "--verbose" in flags:
+        if verbose:
             print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
             print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
             print("Response:")
@@ -56,6 +58,11 @@ def generate_content(
         if response.function_calls:
             for call in response.function_calls:
                 print(f"Calling function: {call.name}({call.args})")
+                result = call_function(call, verbose=verbose)
+                if result.parts[0].function_response.response is None:
+                    raise Exception("Unable to execute the code")
+                else:
+                    print(f"-> {result.parts[0].function_response.response}")
         else:
             print(response.text)
 
