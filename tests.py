@@ -1,24 +1,22 @@
-# from functions.get_file_content import get_file_content
+from functions.get_file_content import get_file_content
+
 # from functions.write_file import write_file
-
 # from functions.get_files_info import get_files_info
-
-
-from functions.run_python import run_python_file
+# from functions.run_python import run_python_file
 
 
 def test():
-    result = run_python_file("calculator", "main.py")
-    print(result)
-
-    result = run_python_file("calculator", "tests.py")
-    print(result)
-
-    result = run_python_file("calculator", "../main.py")
-    print(result)
-
-    result = run_python_file("calculator", "nonexistent.py")
-    print(result)
+    # result = run_python_file("calculator", "main.py")
+    # print(result)
+    #
+    # result = run_python_file("calculator", "tests.py")
+    # print(result)
+    #
+    # result = run_python_file("calculator", "../main.py")
+    # print(result)
+    #
+    # result = run_python_file("calculator", "nonexistent.py")
+    # print(result)
 
     # result = get_files_info("calculator", ".")
     # print("results for current")
@@ -45,20 +43,20 @@ def test():
     # print(result)
     # print("")
 
-    # result = get_file_content("calculator", "main.py")
-    # print("results for a file in main folder")
-    # print(result)
-    # print("")
-    #
-    # result = get_file_content("calculator", "pkg/calculator.py")
-    # print("results for a file inside a folder")
-    # print(result)
-    # print("")
-    #
-    # result = get_file_content("calculator", "/bin/cat")
-    # print("results for folder outside")
-    # print(result)
-    # print("")
+    result = get_file_content("calculator", "main.py")
+    print("results for a file in main folder")
+    print(result)
+    print("")
+
+    result = get_file_content("calculator", "pkg/calculator.py")
+    print("results for a file inside a folder")
+    print(result)
+    print("")
+
+    result = get_file_content("calculator", "/bin/cat")
+    print("results for folder outside")
+    print(result)
+    print("")
 
     # result = write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum")
     # print(result)

@@ -5,7 +5,8 @@ from google import genai
 from google.genai import types
 from google.genai.types import GenerateContentResponse
 import sys
-from config import system_prompt
+from app.prompts import system_prompt
+from app.function_declarations import available_functions
 
 
 def main() -> None:
@@ -27,7 +28,9 @@ def main() -> None:
     if "--verbose" in flags:
         print(f"User prompt: {prompt}")
 
-    messages = [types.Content(role="User", parts=[types.Part(text=prompt)])]
+    messages = [
+        types.Content(role="user", parts=[types.Part(text=prompt)]),
+    ]
 
     generate_content(client, messages, flags)
 
@@ -38,7 +41,10 @@ def generate_content(
     response: GenerateContentResponse = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=messages,
-        config=types.GenerateContentConfig(system_instruction=system_prompt),
+        config=types.GenerateContentConfig(
+            tools=[available_functions],
+            system_instruction=system_prompt,
+        ),
     )
 
     if response and response.usage_metadata:
@@ -47,7 +53,11 @@ def generate_content(
             print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
             print("Response:")
 
-        print(response.text)
+        if response.function_calls:
+            for call in response.function_calls:
+                print(f"Calling function: {call.name}({call.args})")
+        else:
+            print(response.text)
 
     else:
         print("Cannot get a response from the server.")

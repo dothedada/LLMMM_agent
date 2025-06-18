@@ -2,7 +2,7 @@ import subprocess
 import os
 
 
-def run_python_file(working_directory, file_path):
+def run_python_file(working_directory: str, file_path: str) -> str:
     base_path = os.path.abspath(working_directory)
     work_path = os.path.abspath(os.path.join(working_directory, file_path))
 
@@ -24,7 +24,7 @@ def run_python_file(working_directory, file_path):
             cwd=base_path,
         )
 
-        output_element = []
+        output_element: list[str] = []
         if output.stdout:
             output_element.append(f"STDOUT: {output.stdout.decode()}")
         if output.stderr:

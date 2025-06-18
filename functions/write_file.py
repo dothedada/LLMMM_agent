@@ -1,7 +1,7 @@
 import os
 
 
-def write_file(working_directory, file_path, content):
+def write_file(working_directory: str, file_path: str, content: str) -> str:
     base_path = os.path.abspath(working_directory)
     work_path = os.path.abspath(os.path.join(working_directory, file_path))
 

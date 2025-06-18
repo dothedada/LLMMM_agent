@@ -1,5 +1,5 @@
 import os
-from config import FILE_MAX_LENGTH
+from app.config import FILE_MAX_LENGTH
 
 
 def get_file_content(working_directory: str, file_path: str) -> str:
