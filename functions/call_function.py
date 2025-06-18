@@ -16,22 +16,22 @@ functions = {
 
 def call_function(function_call: FunctionCall, verbose: bool = False) -> types.Content:
 
-    # NOTE: revisar que no haya problema al llamar el content sin parametro
-    # if not function_call.name or not function_call.args:
-    #     return types.Content(
-    #         role="tool",
-    #         parts=[
-    #             types.Part.from_function_response(
-    #                 name="no params",
-    #                 response={
-    #                     "error": f"No params given: function -> {function_call.name}, args -> {function_call.args}"
-    #                 },
-    #             )
-    #         ],
-    #     )
+    if not function_call.name:
+        return types.Content(
+            role="tool",
+            parts=[
+                types.Part.from_function_response(
+                    name="no params",
+                    response={
+                        "error": f"No function name given: '{function_call.name}'"
+                    },
+                )
+            ],
+        )
 
     function_name = function_call.name
-    function_args = function_call.args
+    function_args = function_call.args if function_call.args is not None else {}
+
     if verbose:
         print(f"Calling function: {function_name}({function_args})")
     else:
@@ -49,7 +49,7 @@ def call_function(function_call: FunctionCall, verbose: bool = False) -> types.C
             ],
         )
 
-    function_result: str = function("./calculator", **function_call.args)
+    function_result: str = function("./calculator", **function_args)
 
     return types.Content(
         role="tool",

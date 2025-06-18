@@ -57,9 +57,14 @@ def generate_content(
 
         if response.function_calls:
             for call in response.function_calls:
-                print(f"Calling function: {call.name}({call.args})")
+
                 result = call_function(call, verbose=verbose)
-                if result.parts[0].function_response.response is None:
+                if (
+                    result
+                    or result.parts[0]
+                    or result.parts[0].function_response
+                    or result.parts[0].function_response.response
+                ):
                     raise Exception("Unable to execute the code")
                 else:
                     print(f"-> {result.parts[0].function_response.response}")
