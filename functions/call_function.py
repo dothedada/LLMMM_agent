@@ -1,6 +1,7 @@
 from google.genai import types
 from google.genai.types import FunctionCall
 
+from app.config import WORKING_DIR
 from functions.get_file_content import get_file_content
 from functions.get_files_info import get_files_info
 from functions.run_python import run_python_file
@@ -49,7 +50,7 @@ def call_function(function_call: FunctionCall, verbose: bool = False) -> types.C
             ],
         )
 
-    function_result: str = function("./calculator", **function_args)
+    function_result: str = function(WORKING_DIR, **function_args)
 
     return types.Content(
         role="tool",
