@@ -70,7 +70,7 @@ def generate_content(
 
     if response.candidates:
         for candidate in response.candidates:
-            if candidate.content is None:
+            if candidate.content is None or not candidate.content:
                 continue
             messages.append(candidate.content)
 

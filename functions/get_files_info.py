@@ -25,13 +25,10 @@ def get_files_info(working_directory: str, directory: str | None = None) -> str:
 
             output.append(f"- {file}: file_size={size}, is_dir={is_dir}\n")
 
+        return "\n".join(output)
+
     except Exception as err:
         return f"Error listing the files: {err}"
-
-    if len(output) == 0:
-        return f"{directory} is empty"
-
-    return "".join(output)
 
 
 schema_get_files_info = types.FunctionDeclaration(
